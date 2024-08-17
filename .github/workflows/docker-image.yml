@@ -53,15 +53,15 @@ jobs:
         push: ${{ github.event_name != 'pull_request' }}
         # 给清单打上多个标签
         tags: |
-            fuzhengwei/big-market-app:4.0
+            fuzhengwei/big-market-app:4.1
             fuzhengwei/big-market-app:latest    
 
     - name: Tag image for Alibaba Cloud
       run: |
-        docker tag fuzhengwei/big-market-app:3.1 registry.cn-hangzhou.aliyuncs.com/fuzhengwei/big-market-app:4.0
+        docker tag fuzhengwei/big-market-app:4.1 registry.cn-hangzhou.aliyuncs.com/fuzhengwei/big-market-app:4.1
         docker tag fuzhengwei/big-market-app:latest registry.cn-hangzhou.aliyuncs.com/fuzhengwei/big-market-app:latest
 
     - name: Push to Alibaba Cloud Container Registry
       run: |
-        docker push registry.cn-hangzhou.aliyuncs.com/fuzhengwei/big-market-app:4.0
+        docker push registry.cn-hangzhou.aliyuncs.com/fuzhengwei/big-market-app:4.1
         docker push registry.cn-hangzhou.aliyuncs.com/fuzhengwei/big-market-app:latest
