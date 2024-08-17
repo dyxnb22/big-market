@@ -65,6 +65,8 @@ public class DCCValueBeanFactory implements BeanPostProcessor {
                         field.setAccessible(true);
                         field.set(objBean, new String(data.getData()));
                         field.setAccessible(false);
+
+                        log.info("DCC 节点监听 listener value set");
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }

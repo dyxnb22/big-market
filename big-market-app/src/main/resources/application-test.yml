@@ -1,5 +1,5 @@
 server:
-  port: 8091
+  port: 8099
   tomcat:
     threads:
       max: 200        # 设定处理客户请求的线程的最大数目，决定了服务器可以同时响应客户请求的数,默认200
@@ -34,7 +34,7 @@ spring:
     url: jdbc:es://http://116.198.36.253:9200
   cloud:
     zookeeper:
-      enabled: false
+      enabled: true
 
 # 线程池配置
 thread:
@@ -144,8 +144,8 @@ zookeeper:
   sdk:
     config:
       # 状态；true = 开启、false 关闭
-      enable: false
-      connect-string: 192.168.1.108:2181
+      enable: true
+      connect-string: 116.198.36.253:2181
       base-sleep-time-ms: 1000
       max-retries: 3
       session-timeout-ms: 18000
@@ -158,7 +158,7 @@ xxl:
     accessToken: default_token
     # 注册地址
     admin:
-      addresses: http://192.168.1.108:9090/xxl-job-admin
+      addresses: http://116.198.36.253:9090/xxl-job-admin
     # 注册执行器
     executor:
       #  执行器注册 [选填]：优先使用该配置作为注册地址，为空时使用内嵌服务 ”IP:PORT“ 作为注册地址。从而更灵活的支持容器类型执行器动态IP和动态映射端口问题。
