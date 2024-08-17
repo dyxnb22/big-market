@@ -2,9 +2,9 @@ name: Maven Build and Docker Image CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "docker-images-*" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "docker-images-*" ]
 
 jobs:
   build:
