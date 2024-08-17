@@ -34,7 +34,7 @@ spring:
     url: jdbc:es://http://elasticsearch:9200
   cloud:
     zookeeper:
-      enabled: false
+      enabled: true
 
 # 线程池配置
 thread:
