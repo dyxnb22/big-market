@@ -159,16 +159,16 @@ services:
   # docker cp canal-adapter:/opt/canal-adapter/conf/application.yml /Users/xiaofuge/Documents/develop/github/xfg-studio/xfg-dev-tech-canal/docs/dev-ops/canal-adapter
   # docker cp canal-adapter:/opt/canal-adapter/conf/rdb/mytest_user.yml /Users/xiaofuge/Documents/develop/github/xfg-studio/xfg-dev-tech-canal/docs/dev-ops/canal-adapter/rdb
   canal-adapter:
-    image: registry.cn-hangzhou.aliyuncs.com/xfg-studio/canal-adapter:v1.1.6
+    image: coopersoft/canal-adapter:v1.1.6
     container_name: canal-adapter
     restart: unless-stopped
     ports:
       - "8082:8081"
     volumes:
-      - ./canal-adapter/application.yml:/opt/canal-adapter/conf/application.yml
+      - ./canal-adapter/conf:/opt/canal-adapter/conf
       - ./canal-adapter/es7:/opt/canal-adapter/conf/es7
     depends_on:
-      - canal-server
+      - mysql
     networks:
       - my-network
 

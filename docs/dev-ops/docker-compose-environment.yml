@@ -165,10 +165,10 @@ services:
     ports:
       - "8082:8081"
     volumes:
-      - ./canal-adapter/application.yml:/opt/canal-adapter/conf/application.yml
+      - ./canal-adapter/conf:/opt/canal-adapter/conf
       - ./canal-adapter/es7:/opt/canal-adapter/conf/es7
     depends_on:
-      - canal-server
+      - mysql
     networks:
       - my-network
 
