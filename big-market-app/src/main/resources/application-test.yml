@@ -34,7 +34,7 @@ spring:
     url: jdbc:es://http://116.198.36.253:9200
   cloud:
     zookeeper:
-      enabled: true
+      enabled: false
 
 # 线程池配置
 thread:
@@ -145,7 +145,7 @@ zookeeper:
     config:
       # 状态；true = 开启、false 关闭
       enable: true
-      connect-string: 116.198.36.253:2181
+      connect-string: 192.168.1.108:2181
       base-sleep-time-ms: 1000
       max-retries: 3
       session-timeout-ms: 18000
