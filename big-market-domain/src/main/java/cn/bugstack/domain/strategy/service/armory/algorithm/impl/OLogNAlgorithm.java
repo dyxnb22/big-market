@@ -121,14 +121,14 @@ public class OLogNAlgorithm extends AbstractAlgorithm {
         return null;
     }
 
-    private Integer threadSearch(int rateRange, Map<Map<String, Integer>, Integer> table) {
+    private Integer threadSearch(int rateKey, Map<Map<String, Integer>, Integer> table) {
         List<CompletableFuture<Map.Entry<Map<String, Integer>, Integer>>> futures = table.entrySet().stream()
                 .map(entry -> CompletableFuture.supplyAsync(() -> {
                     Map<String, Integer> rangeMap = entry.getKey();
                     for (Map.Entry<String, Integer> rangeEntry : rangeMap.entrySet()) {
                         int start = Integer.parseInt(rangeEntry.getKey());
                         int end = rangeEntry.getValue();
-                        if (rateRange >= start && rateRange <= end) {
+                        if (rateKey >= start && rateKey <= end) {
                             return entry;
                         }
                     }
