@@ -60,17 +60,17 @@ public class OLogNAlgorithm extends AbstractAlgorithm {
         // 小于等于8 for循环、小于等于16 二分查找、更多检索走多线程
         if (table.size() <= 8) {
             log.info("抽奖算法 OLog(n) 抽奖计算（循环） key:{}", key);
-            return forSearch(rateRange, table);
+            return forSearch(secureRandom.nextInt(rateRange), table);
         } else if (table.size() <= 16) {
             log.info("抽奖算法 OLog(n) 抽奖计算（二分） key:{}", key);
-            return binarySearch(rateRange, table);
+            return binarySearch(secureRandom.nextInt(rateRange), table);
         } else {
             log.info("抽奖算法 OLog(n) 抽奖计算（多线程） key:{}", key);
-            return threadSearch(rateRange, table);
+            return threadSearch(secureRandom.nextInt(rateRange), table);
         }
     }
 
-    private Integer forSearch(int rateRange, Map<Map<String, Integer>, Integer> table) {
+    private Integer forSearch(int rateKey, Map<Map<String, Integer>, Integer> table) {
         Integer awardId = null;
         for (Map.Entry<Map<String, Integer>, Integer> entry : table.entrySet()) {
             Map<String, Integer> rangeMap = entry.getKey();
@@ -79,7 +79,7 @@ public class OLogNAlgorithm extends AbstractAlgorithm {
                 int start = Integer.parseInt(range.getKey());
                 int end = range.getValue();
 
-                if (rateRange >= start && rateRange <= end) {
+                if (rateKey >= start && rateKey <= end) {
                     awardId = entry.getValue();
                     break;
                 }
@@ -93,7 +93,7 @@ public class OLogNAlgorithm extends AbstractAlgorithm {
         return awardId;
     }
 
-    private Integer binarySearch(int rateRange, Map<Map<String, Integer>, Integer> table) {
+    private Integer binarySearch(int rateKey, Map<Map<String, Integer>, Integer> table) {
         List<Map.Entry<Map<String, Integer>, Integer>> entries = new ArrayList<>(table.entrySet());
         entries.sort(Comparator.comparingInt(e -> Integer.parseInt(e.getKey().keySet().iterator().next())));
 
@@ -109,9 +109,9 @@ public class OLogNAlgorithm extends AbstractAlgorithm {
             int start = Integer.parseInt(range.getKey());
             int end = range.getValue();
 
-            if (rateRange < start) {
+            if (rateKey < start) {
                 right = mid - 1;
-            } else if (rateRange > end) {
+            } else if (rateKey > end) {
                 left = mid + 1;
             } else {
                 return entry.getValue();
