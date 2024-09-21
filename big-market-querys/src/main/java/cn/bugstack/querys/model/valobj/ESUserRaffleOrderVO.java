@@ -1,24 +1,21 @@
-package cn.bugstack.infrastructure.dao.po;
+package cn.bugstack.querys.model.valobj;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 import java.util.Date;
 
 /**
  * @author Fuzhengwei bugstack.cn @小傅哥
- * @description 用户抽奖订单表
- * @create 2024-04-03 15:30
+ * @description 用户抽奖订单表值对象
+ * @create 2024-09-21 10:11
  */
-@Data
+@Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class UserRaffleOrder {
+public class ESUserRaffleOrderVO {
 
-    private String id;
     /** 用户ID */
     private String userId;
     /** 活动ID */

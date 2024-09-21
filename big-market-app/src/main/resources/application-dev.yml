@@ -34,7 +34,7 @@ spring:
       credit_adjust_success: credit_adjust_success
   elasticsearch.datasource:
     driverClassName: org.elasticsearch.xpack.sql.jdbc.EsDriver
-    url: jdbc:es://http://192.168.1.108:9200
+    url: jdbc:es://http://192.168.1.109:9200
   cloud:
     zookeeper:
       enabled: false
