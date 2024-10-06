@@ -5,7 +5,7 @@ import cn.bugstack.domain.award.model.entity.DistributeAwardEntity;
 import cn.bugstack.domain.award.model.entity.UserAwardRecordEntity;
 import cn.bugstack.domain.award.model.entity.UserCreditAwardEntity;
 import cn.bugstack.domain.award.model.valobj.AwardStateVO;
-import cn.bugstack.domain.award.repository.IAwardRepository;
+import cn.bugstack.domain.award.adapter.repository.IAwardRepository;
 import cn.bugstack.domain.award.service.distribute.IDistributeAward;
 import cn.bugstack.types.common.Constants;
 import org.apache.commons.lang3.StringUtils;

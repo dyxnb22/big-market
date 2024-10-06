@@ -51,7 +51,7 @@ public class AwardServiceTest {
     }
 
     @Test
-    public void test_distributeAward() throws InterruptedException {
+    public void test_distributeAward() throws Exception {
         DistributeAwardEntity distributeAwardEntity = new DistributeAwardEntity();
         distributeAwardEntity.setUserId("xiaofuge");
         distributeAwardEntity.setOrderId("690124733440");

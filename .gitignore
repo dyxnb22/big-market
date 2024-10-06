@@ -40,3 +40,4 @@ build/
 /.idea/
 /docs/dev-ops/log/
 /big-market-app/data/
+/push_all_branches.sh

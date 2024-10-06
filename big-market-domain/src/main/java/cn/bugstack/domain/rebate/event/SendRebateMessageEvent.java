@@ -1,6 +1,5 @@
 package cn.bugstack.domain.rebate.event;
 
-import cn.bugstack.domain.award.event.SendAwardMessageEvent;
 import cn.bugstack.types.event.BaseEvent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

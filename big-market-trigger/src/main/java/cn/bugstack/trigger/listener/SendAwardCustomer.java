@@ -1,9 +1,8 @@
 package cn.bugstack.trigger.listener;
 
-import cn.bugstack.domain.award.event.SendAwardMessageEvent;
+import cn.bugstack.domain.award.adapter.event.SendAwardMessageEvent;
 import cn.bugstack.domain.award.model.entity.DistributeAwardEntity;
 import cn.bugstack.domain.award.service.IAwardService;
-import cn.bugstack.domain.rebate.event.SendRebateMessageEvent;
 import cn.bugstack.types.event.BaseEvent;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.TypeReference;
@@ -12,7 +11,6 @@ import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 

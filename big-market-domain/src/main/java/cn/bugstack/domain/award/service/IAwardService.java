@@ -15,6 +15,6 @@ public interface IAwardService {
     /**
      * 配送发货奖品
      */
-    void distributeAward(DistributeAwardEntity distributeAwardEntity);
+    void distributeAward(DistributeAwardEntity distributeAwardEntity) throws Exception;
 
 }

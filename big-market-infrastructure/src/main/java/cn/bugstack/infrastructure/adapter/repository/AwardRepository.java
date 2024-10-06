@@ -6,7 +6,7 @@ import cn.bugstack.domain.award.model.entity.TaskEntity;
 import cn.bugstack.domain.award.model.entity.UserAwardRecordEntity;
 import cn.bugstack.domain.award.model.entity.UserCreditAwardEntity;
 import cn.bugstack.domain.award.model.valobj.AccountStatusVO;
-import cn.bugstack.domain.award.repository.IAwardRepository;
+import cn.bugstack.domain.award.adapter.repository.IAwardRepository;
 import cn.bugstack.infrastructure.dao.*;
 import cn.bugstack.infrastructure.event.EventPublisher;
 import cn.bugstack.infrastructure.dao.po.Task;

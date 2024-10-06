@@ -1,6 +1,6 @@
 package cn.bugstack.domain.award.model.entity;
 
-import cn.bugstack.domain.award.event.SendAwardMessageEvent;
+import cn.bugstack.domain.award.adapter.event.SendAwardMessageEvent;
 import cn.bugstack.domain.award.model.valobj.TaskStateVO;
 import cn.bugstack.types.event.BaseEvent;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package cn.bugstack.domain.award.repository;
+package cn.bugstack.domain.award.adapter.repository;
 
 import cn.bugstack.domain.award.model.aggregate.GiveOutPrizesAggregate;
 import cn.bugstack.domain.award.model.aggregate.UserAwardRecordAggregate;
