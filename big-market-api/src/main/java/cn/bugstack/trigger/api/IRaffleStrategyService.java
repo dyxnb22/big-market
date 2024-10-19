@@ -23,6 +23,15 @@ public interface IRaffleStrategyService {
     /**
      * 查询抽奖奖品列表配置
      *
+     * @param token 鉴权
+     * @param request 抽奖奖品列表查询请求参数
+     * @return 奖品列表数据
+     */
+    Response<List<RaffleAwardListResponseDTO>> queryRaffleAwardListByToken(String token, RaffleAwardListRequestDTO request);
+
+    /**
+     * 查询抽奖奖品列表配置
+     *
      * @param request 抽奖奖品列表查询请求参数
      * @return 奖品列表数据
      */

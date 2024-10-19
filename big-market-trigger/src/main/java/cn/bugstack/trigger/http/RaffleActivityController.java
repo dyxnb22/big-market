@@ -6,6 +6,7 @@ import cn.bugstack.domain.activity.service.IRaffleActivityAccountQuotaService;
 import cn.bugstack.domain.activity.service.IRaffleActivityPartakeService;
 import cn.bugstack.domain.activity.service.IRaffleActivitySkuProductService;
 import cn.bugstack.domain.activity.service.armory.IActivityArmory;
+import cn.bugstack.domain.auth.service.IAuthService;
 import cn.bugstack.domain.award.model.entity.UserAwardRecordEntity;
 import cn.bugstack.domain.award.model.valobj.AwardStateVO;
 import cn.bugstack.domain.award.service.IAwardService;
@@ -77,11 +78,12 @@ public class RaffleActivityController implements IRaffleActivityService {
     private IBehaviorRebateService behaviorRebateService;
     @Resource
     private ICreditAdjustService creditAdjustService;
+    @Resource
+    private IAuthService authService;
 
     // dcc 统一配置中心动态配置降级开关
     @DCCValue("degradeSwitch:close")
     private String degradeSwitch;
-
 
     /**
      * 活动装配 - 数据预热 | 把活动配置的对应的 sku 一起装配
@@ -118,6 +120,37 @@ public class RaffleActivityController implements IRaffleActivityService {
         } catch (Exception e) {
             log.error("活动装配，数据预热，失败 activityId:{}", activityId, e);
             return Response.<Boolean>builder()
+                    .code(ResponseCode.UN_ERROR.getCode())
+                    .info(ResponseCode.UN_ERROR.getInfo())
+                    .build();
+        }
+    }
+
+    @RequestMapping(value = "draw_by_token", method = RequestMethod.POST)
+    @Override
+    public Response<ActivityDrawResponseDTO> draw(@RequestHeader("Authorization") String token, @RequestBody ActivityDrawRequestDTO request) {
+        try {
+            // 1. Token 校验
+            boolean success = authService.checkToken(token);
+            if (!success) {
+                return Response.<ActivityDrawResponseDTO>builder()
+                        .code(ResponseCode.Login.TOKEN_ERROR.getCode())
+                        .info(ResponseCode.Login.TOKEN_ERROR.getInfo())
+                        .build();
+            }
+
+            // 2. Token 解析
+            String openid = authService.openid(token);
+            assert null != openid;
+
+            log.info("活动抽奖开始 - 解析用户ID userId:{}", openid);
+            request.setUserId(openid);
+
+            // 3. 执行抽奖
+            return draw(request);
+        } catch (Exception e) {
+            log.error("活动抽奖失败 userId:{} activityId:{}", request.getUserId(), request.getActivityId(), e);
+            return Response.<ActivityDrawResponseDTO>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
                     .build();
@@ -242,6 +275,34 @@ public class RaffleActivityController implements IRaffleActivityService {
                 .build();
     }
 
+    @RequestMapping(value = "calendar_sign_rebate_by_token", method = RequestMethod.POST)
+    @Override
+    public Response<Boolean> calendarSignRebateByToken(@RequestHeader("Authorization") String token) {
+        try {
+            // 1. Token 校验
+            boolean success = authService.checkToken(token);
+            if (!success) {
+                return Response.<Boolean>builder()
+                        .code(ResponseCode.Login.TOKEN_ERROR.getCode())
+                        .info(ResponseCode.Login.TOKEN_ERROR.getInfo())
+                        .build();
+            }
+
+            // 2. Token 解析
+            String openid = authService.openid(token);
+            assert null != openid;
+            log.info("执行签到开始 - 解析用户ID userId:{}", openid);
+            // 3. 执行签到
+            return calendarSignRebate(openid);
+        } catch (Exception e) {
+            log.error("执行签到失败", e);
+            return Response.<Boolean>builder()
+                    .code(ResponseCode.UN_ERROR.getCode())
+                    .info(ResponseCode.UN_ERROR.getInfo())
+                    .build();
+        }
+    }
+
     /**
      * 日历签到返利接口
      *
@@ -288,6 +349,34 @@ public class RaffleActivityController implements IRaffleActivityService {
         }
     }
 
+    @RequestMapping(value = "is_calendar_sign_rebate_by_token", method = RequestMethod.POST)
+    @Override
+    public Response<Boolean> isCalendarSignRebateByToken(@RequestHeader("Authorization") String token) {
+        try {
+            // 1. Token 校验
+            boolean success = authService.checkToken(token);
+            if (!success) {
+                return Response.<Boolean>builder()
+                        .code(ResponseCode.Login.TOKEN_ERROR.getCode())
+                        .info(ResponseCode.Login.TOKEN_ERROR.getInfo())
+                        .build();
+            }
+
+            // 2. Token 解析
+            String openid = authService.openid(token);
+            assert null != openid;
+            log.info("执行判断签到开始 - 解析用户ID userId:{}", openid);
+            // 3. 执行签到
+            return isCalendarSignRebate(openid);
+        } catch (Exception e) {
+            log.error("执行判断签到失败", e);
+            return Response.<Boolean>builder()
+                    .code(ResponseCode.UN_ERROR.getCode())
+                    .info(ResponseCode.UN_ERROR.getInfo())
+                    .build();
+        }
+    }
+
     /**
      * 判断是否签到接口
      * <p>
@@ -315,6 +404,36 @@ public class RaffleActivityController implements IRaffleActivityService {
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
                     .data(false)
+                    .build();
+        }
+    }
+
+    @RequestMapping(value = "query_user_activity_account_by_token", method = RequestMethod.POST)
+    @Override
+    public Response<UserActivityAccountResponseDTO> queryUserActivityAccount(@RequestHeader("Authorization") String token, @RequestBody UserActivityAccountRequestDTO request) {
+        try {
+            // 1. Token 校验
+            boolean success = authService.checkToken(token);
+            if (!success) {
+                return Response.<UserActivityAccountResponseDTO>builder()
+                        .code(ResponseCode.Login.TOKEN_ERROR.getCode())
+                        .info(ResponseCode.Login.TOKEN_ERROR.getInfo())
+                        .build();
+            }
+
+            // 2. Token 解析
+            String openid = authService.openid(token);
+            assert null != openid;
+            log.info("执行判断签到开始 - 解析用户ID userId:{}", openid);
+            request.setUserId(openid);
+
+            // 3. 执行签到
+            return queryUserActivityAccount(request);
+        } catch (Exception e) {
+            log.error("执行判断签到失败", e);
+            return Response.<UserActivityAccountResponseDTO>builder()
+                    .code(ResponseCode.UN_ERROR.getCode())
+                    .info(ResponseCode.UN_ERROR.getInfo())
                     .build();
         }
     }
@@ -408,6 +527,35 @@ public class RaffleActivityController implements IRaffleActivityService {
         }
     }
 
+    @RequestMapping(value = "query_user_credit_account_by_token", method = RequestMethod.POST)
+    @Override
+    public Response<BigDecimal> queryUserCreditAccountByToken(@RequestHeader("Authorization") String token) {
+        try {
+            // 1. Token 校验
+            boolean success = authService.checkToken(token);
+            if (!success) {
+                return Response.<BigDecimal>builder()
+                        .code(ResponseCode.Login.TOKEN_ERROR.getCode())
+                        .info(ResponseCode.Login.TOKEN_ERROR.getInfo())
+                        .build();
+            }
+
+            // 2. Token 解析
+            String openid = authService.openid(token);
+            assert null != openid;
+            log.info("查询用户积分值开始 - 解析用户ID userId:{}", openid);
+
+            // 3. 执行签到
+            return queryUserCreditAccount(openid);
+        } catch (Exception e) {
+            log.error("查询用户积分值失败", e);
+            return Response.<BigDecimal>builder()
+                    .code(ResponseCode.UN_ERROR.getCode())
+                    .info(ResponseCode.UN_ERROR.getInfo())
+                    .build();
+        }
+    }
+
     @RequestMapping(value = "query_user_credit_account", method = RequestMethod.POST)
     @Override
     public Response<BigDecimal> queryUserCreditAccount(String userId) {
@@ -426,6 +574,36 @@ public class RaffleActivityController implements IRaffleActivityService {
         } catch (Exception e) {
             log.error("查询用户积分值失败 userId:{}", userId, e);
             return Response.<BigDecimal>builder()
+                    .code(ResponseCode.UN_ERROR.getCode())
+                    .info(ResponseCode.UN_ERROR.getInfo())
+                    .build();
+        }
+    }
+
+    @RequestMapping(value = "credit_pay_exchange_sku_by_token", method = RequestMethod.POST)
+    @Override
+    public Response<Boolean> creditPayExchangeSku(@RequestHeader("Authorization") String token, @RequestBody SkuProductShopCartRequestDTO request) {
+        try {
+            // 1. Token 校验
+            boolean success = authService.checkToken(token);
+            if (!success) {
+                return Response.<Boolean>builder()
+                        .code(ResponseCode.Login.TOKEN_ERROR.getCode())
+                        .info(ResponseCode.Login.TOKEN_ERROR.getInfo())
+                        .build();
+            }
+
+            // 2. Token 解析
+            String openid = authService.openid(token);
+            assert null != openid;
+            log.info("查询用户积分值开始 - 解析用户ID userId:{}", openid);
+            request.setUserId(openid);
+
+            // 3. 执行签到
+            return creditPayExchangeSku(request);
+        } catch (Exception e) {
+            log.error("查询用户积分值失败", e);
+            return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
                     .build();

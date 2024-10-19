@@ -27,7 +27,23 @@ public interface IRaffleActivityService {
      * @param request 请求对象
      * @return 返回结果
      */
+    Response<ActivityDrawResponseDTO> draw(String token, ActivityDrawRequestDTO request);
+
+    /**
+     * 活动抽奖接口
+     *
+     * @param request 请求对象
+     * @return 返回结果
+     */
     Response<ActivityDrawResponseDTO> draw(ActivityDrawRequestDTO request);
+
+    /**
+     * 日历签到返利接口
+     *
+     * @param token 登录Token
+     * @return 签到结果
+     */
+    Response<Boolean> calendarSignRebateByToken(String token);
 
     /**
      * 日历签到返利接口
@@ -40,10 +56,27 @@ public interface IRaffleActivityService {
     /**
      * 判断是否完成日历签到返利接口
      *
+     * @param token token
+     * @return 签到结果 true 已签到，false 未签到
+     */
+    Response<Boolean> isCalendarSignRebateByToken(String token);
+
+    /**
+     * 判断是否完成日历签到返利接口
+     *
      * @param userId 用户ID
      * @return 签到结果 true 已签到，false 未签到
      */
     Response<Boolean> isCalendarSignRebate(String userId);
+
+    /**
+     * 查询用户活动账户
+     *
+     * @param token 鉴权token
+     * @param request 请求对象「活动ID、用户ID」
+     * @return 返回结果「总额度、月额度、日额度」
+     */
+    Response<UserActivityAccountResponseDTO> queryUserActivityAccount(String token, UserActivityAccountRequestDTO request);
 
     /**
      * 查询用户活动账户
@@ -61,6 +94,8 @@ public interface IRaffleActivityService {
      */
     Response<List<SkuProductResponseDTO>> querySkuProductListByActivityId(Long activityId);
 
+    Response<BigDecimal> queryUserCreditAccountByToken(String token);
+
     /**
      * 查询用户积分值
      *
@@ -68,6 +103,8 @@ public interface IRaffleActivityService {
      * @return 可用积分
      */
     Response<BigDecimal> queryUserCreditAccount(String userId);
+
+    Response<Boolean> creditPayExchangeSku(String token, SkuProductShopCartRequestDTO request);
 
     /**
      * 积分支付兑换商品

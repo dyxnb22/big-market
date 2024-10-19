@@ -1,6 +1,7 @@
 package cn.bugstack.trigger.http;
 
 import cn.bugstack.domain.activity.service.IRaffleActivityAccountQuotaService;
+import cn.bugstack.domain.auth.service.IAuthService;
 import cn.bugstack.domain.strategy.model.entity.RaffleAwardEntity;
 import cn.bugstack.domain.strategy.model.entity.RaffleFactorEntity;
 import cn.bugstack.domain.strategy.model.entity.StrategyAwardEntity;
@@ -47,6 +48,8 @@ public class RaffleStrategyController implements IRaffleStrategyService {
     private IStrategyArmory strategyArmory;
     @Resource
     private IRaffleActivityAccountQuotaService raffleActivityAccountQuotaService;
+    @Resource
+    private IAuthService authService;
 
     /**
      * 策略装配，将策略信息装配到缓存中
@@ -71,6 +74,37 @@ public class RaffleStrategyController implements IRaffleStrategyService {
         } catch (Exception e) {
             log.error("抽奖策略装配失败 strategyId：{}", strategyId, e);
             return Response.<Boolean>builder()
+                    .code(ResponseCode.UN_ERROR.getCode())
+                    .info(ResponseCode.UN_ERROR.getInfo())
+                    .build();
+        }
+    }
+
+    @RequestMapping(value = "query_raffle_award_list_by_token", method = RequestMethod.POST)
+    @Override
+    public Response<List<RaffleAwardListResponseDTO>> queryRaffleAwardListByToken(@RequestHeader("Authorization") String token, @RequestBody RaffleAwardListRequestDTO request) {
+        try {
+            // 1. Token 校验
+            boolean success = authService.checkToken(token);
+            if (!success) {
+                return Response.<List<RaffleAwardListResponseDTO>>builder()
+                        .code(ResponseCode.Login.TOKEN_ERROR.getCode())
+                        .info(ResponseCode.Login.TOKEN_ERROR.getInfo())
+                        .build();
+            }
+
+            // 2. Token 解析
+            String openid = authService.openid(token);
+            assert null != openid;
+
+            log.info("查询抽奖奖品开始 - 解析用户ID userId:{}", openid);
+            request.setUserId(openid);
+
+            // 3. 执行抽奖
+            return queryRaffleAwardList(request);
+        } catch (Exception e) {
+            log.error("查询抽奖奖品失败 userId:{} activityId:{}", request.getUserId(), request.getActivityId(), e);
+            return Response.<List<RaffleAwardListResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
                     .build();
