@@ -50,7 +50,7 @@ public class BehaviorRebateRepository implements IBehaviorRebateRepository {
 
     @Override
     public List<DailyBehaviorRebateVO> queryDailyBehaviorRebateConfig(BehaviorTypeVO behaviorTypeVO) {
-        List<DailyBehaviorRebate> dailyBehaviorRebates = dailyBehaviorRebateDao.queryDailyBehaviorRebateByBehaviorType(behaviorTypeVO.getCode());
+        List<DailyBehaviorRebate> dailyBehaviorRebates = dailyBehaviorRebateDao.queryDailyBehaviorRebateByBehaviorType(behaviorTypeVO.getCode().toLowerCase());
         List<DailyBehaviorRebateVO> dailyBehaviorRebateVOS = new ArrayList<>(dailyBehaviorRebates.size());
         for (DailyBehaviorRebate dailyBehaviorRebate : dailyBehaviorRebates) {
             dailyBehaviorRebateVOS.add(DailyBehaviorRebateVO.builder()

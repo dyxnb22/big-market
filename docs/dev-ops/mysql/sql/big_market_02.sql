@@ -7,7 +7,7 @@
 #
 # 主机: 127.0.0.1 (MySQL 5.6.39)
 # 数据库: big_market_02
-# 生成时间: 2024-10-19 08:03:51 +0000
+# 生成时间: 2024-10-20 10:30:51 +0000
 # ************************************************************
 
 
@@ -30,7 +30,7 @@ DROP TABLE IF EXISTS `raffle_activity_account`;
 
 CREATE TABLE `raffle_activity_account` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
   `total_count` int(8) NOT NULL COMMENT '总次数',
   `total_count_surplus` int(8) NOT NULL COMMENT '总次数-剩余',
@@ -59,7 +59,8 @@ VALUES
 	(9,'xiaofuge24',100301,3,0,3,0,3,0,'2024-06-22 09:59:19','2024-06-22 09:59:55'),
 	(10,'xiaofuge25',100301,6,0,6,0,6,0,'2024-06-22 10:07:41','2024-06-22 10:20:54'),
 	(11,'xiaofuge100',100301,59,44,59,44,59,44,'2024-06-22 11:30:38','2024-06-22 11:37:25'),
-	(12,'xiaofuge101',100301,57,54,57,54,57,54,'2024-06-22 11:44:50','2024-06-22 11:53:25');
+	(12,'xiaofuge101',100301,57,54,57,54,57,54,'2024-06-22 11:44:50','2024-06-22 11:53:25'),
+	(13,'http://你的地址.natapp1.cc/api/v1/mall/pay_notify',100401,2,2,2,2,2,2,'2024-10-20 16:27:35','2024-10-20 16:29:33');
 
 /*!40000 ALTER TABLE `raffle_activity_account` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -72,7 +73,7 @@ DROP TABLE IF EXISTS `raffle_activity_account_day`;
 
 CREATE TABLE `raffle_activity_account_day` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
   `day` varchar(10) NOT NULL COMMENT '日期（yyyy-mm-dd）',
   `day_count` int(8) NOT NULL COMMENT '日次数',
@@ -109,7 +110,7 @@ DROP TABLE IF EXISTS `raffle_activity_account_month`;
 
 CREATE TABLE `raffle_activity_account_month` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
   `month` varchar(7) NOT NULL COMMENT '月（yyyy-mm）',
   `month_count` int(8) NOT NULL COMMENT '月次数',
@@ -144,7 +145,7 @@ DROP TABLE IF EXISTS `raffle_activity_order_000`;
 
 CREATE TABLE `raffle_activity_order_000` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `sku` bigint(12) NOT NULL COMMENT '商品sku',
   `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
   `activity_name` varchar(64) NOT NULL COMMENT '活动名称',
@@ -174,7 +175,7 @@ DROP TABLE IF EXISTS `raffle_activity_order_001`;
 
 CREATE TABLE `raffle_activity_order_001` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `sku` bigint(12) NOT NULL COMMENT '商品sku',
   `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
   `activity_name` varchar(64) NOT NULL COMMENT '活动名称',
@@ -195,6 +196,16 @@ CREATE TABLE `raffle_activity_order_001` (
   KEY `idx_user_id_activity_id` (`user_id`,`activity_id`,`state`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='抽奖活动单';
 
+LOCK TABLES `raffle_activity_order_001` WRITE;
+/*!40000 ALTER TABLE `raffle_activity_order_001` DISABLE KEYS */;
+
+INSERT INTO `raffle_activity_order_001` (`id`, `user_id`, `sku`, `activity_id`, `activity_name`, `strategy_id`, `order_id`, `order_time`, `total_count`, `day_count`, `month_count`, `pay_amount`, `state`, `out_business_no`, `create_time`, `update_time`)
+VALUES
+	(1,'http://你的地址.natapp1.cc/api/v1/mall/pay_notify',9901,100401,'OpenAi抽奖活动',10007,'996433487852','2024-10-20 16:27:35',1,1,1,0.00,'completed','http://你的地址.natapp1.cc/api/v1/mall/pay_notify_sku_292932328126','2024-10-20 16:27:35','2024-10-20 16:27:35'),
+	(2,'http://你的地址.natapp1.cc/api/v1/mall/pay_notify',9901,100401,'OpenAi抽奖活动',10007,'281367950717','2024-10-20 16:29:33',1,1,1,0.00,'completed','http://你的地址.natapp1.cc/api/v1/mall/pay_notify_sku_178799200110','2024-10-20 16:29:33','2024-10-20 16:29:33');
+
+/*!40000 ALTER TABLE `raffle_activity_order_001` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # 转储表 raffle_activity_order_002
@@ -204,7 +215,7 @@ DROP TABLE IF EXISTS `raffle_activity_order_002`;
 
 CREATE TABLE `raffle_activity_order_002` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `sku` bigint(12) NOT NULL COMMENT '商品sku',
   `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
   `activity_name` varchar(64) NOT NULL COMMENT '活动名称',
@@ -234,7 +245,7 @@ DROP TABLE IF EXISTS `raffle_activity_order_003`;
 
 CREATE TABLE `raffle_activity_order_003` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `sku` bigint(12) NOT NULL COMMENT '商品sku',
   `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
   `activity_name` varchar(64) NOT NULL COMMENT '活动名称',
@@ -264,7 +275,7 @@ DROP TABLE IF EXISTS `task`;
 
 CREATE TABLE `task` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `topic` varchar(32) NOT NULL COMMENT '消息主题',
   `message_id` varchar(11) DEFAULT NULL COMMENT '消息编号',
   `message` varchar(512) NOT NULL COMMENT '消息主体',
@@ -277,6 +288,18 @@ CREATE TABLE `task` (
   KEY `idx_create_time` (`update_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='任务表，发送MQ';
 
+LOCK TABLES `task` WRITE;
+/*!40000 ALTER TABLE `task` DISABLE KEYS */;
+
+INSERT INTO `task` (`id`, `user_id`, `topic`, `message_id`, `message`, `state`, `create_time`, `update_time`)
+VALUES
+	(1,'http://你的地址.natapp1.cc/api/v1/mall/pay_notify','send_rebate','44781028948','{\"data\":{\"bizId\":\"http://你的地址.natapp1.cc/api/v1/mall/pay_notify_sku_292932328126\",\"rebateConfig\":\"9901\",\"rebateType\":\"sku\",\"userId\":\"http://你的地址.natapp1.cc/api/v1/mall/pay_notify\"},\"id\":\"44781028948\",\"timestamp\":1729412854509}','completed','2024-10-20 16:27:34','2024-10-20 16:27:34'),
+	(2,'http://你的地址.natapp1.cc/api/v1/mall/pay_notify','send_rebate','25053625192','{\"data\":{\"bizId\":\"http://你的地址.natapp1.cc/api/v1/mall/pay_notify_integral_292932328126\",\"rebateConfig\":\"10\",\"rebateType\":\"integral\",\"userId\":\"http://你的地址.natapp1.cc/api/v1/mall/pay_notify\"},\"id\":\"25053625192\",\"timestamp\":1729412854509}','completed','2024-10-20 16:27:34','2024-10-20 16:27:34'),
+	(3,'http://你的地址.natapp1.cc/api/v1/mall/pay_notify','send_rebate','95141291189','{\"data\":{\"bizId\":\"http://你的地址.natapp1.cc/api/v1/mall/pay_notify_sku_178799200110\",\"rebateConfig\":\"9901\",\"rebateType\":\"sku\",\"userId\":\"http://你的地址.natapp1.cc/api/v1/mall/pay_notify\"},\"id\":\"95141291189\",\"timestamp\":1729412973436}','completed','2024-10-20 16:29:33','2024-10-20 16:29:33'),
+	(4,'http://你的地址.natapp1.cc/api/v1/mall/pay_notify','send_rebate','41785009386','{\"data\":{\"bizId\":\"http://你的地址.natapp1.cc/api/v1/mall/pay_notify_integral_178799200110\",\"rebateConfig\":\"10\",\"rebateType\":\"integral\",\"userId\":\"http://你的地址.natapp1.cc/api/v1/mall/pay_notify\"},\"id\":\"41785009386\",\"timestamp\":1729412973436}','completed','2024-10-20 16:29:33','2024-10-20 16:29:33');
+
+/*!40000 ALTER TABLE `task` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # 转储表 user_award_record_000
@@ -286,7 +309,7 @@ DROP TABLE IF EXISTS `user_award_record_000`;
 
 CREATE TABLE `user_award_record_000` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
   `strategy_id` bigint(8) NOT NULL COMMENT '抽奖策略ID',
   `order_id` varchar(12) NOT NULL COMMENT '抽奖订单ID【作为幂等使用】',
@@ -312,7 +335,7 @@ DROP TABLE IF EXISTS `user_award_record_001`;
 
 CREATE TABLE `user_award_record_001` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
   `strategy_id` bigint(8) NOT NULL COMMENT '抽奖策略ID',
   `order_id` varchar(12) NOT NULL COMMENT '抽奖订单ID【作为幂等使用】',
@@ -338,7 +361,7 @@ DROP TABLE IF EXISTS `user_award_record_002`;
 
 CREATE TABLE `user_award_record_002` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
   `strategy_id` bigint(8) NOT NULL COMMENT '抽奖策略ID',
   `order_id` varchar(12) NOT NULL COMMENT '抽奖订单ID【作为幂等使用】',
@@ -364,7 +387,7 @@ DROP TABLE IF EXISTS `user_award_record_003`;
 
 CREATE TABLE `user_award_record_003` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
   `strategy_id` bigint(8) NOT NULL COMMENT '抽奖策略ID',
   `order_id` varchar(12) NOT NULL COMMENT '抽奖订单ID【作为幂等使用】',
@@ -390,13 +413,13 @@ DROP TABLE IF EXISTS `user_behavior_rebate_order_000`;
 
 CREATE TABLE `user_behavior_rebate_order_000` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `order_id` varchar(12) NOT NULL COMMENT '订单ID',
   `behavior_type` varchar(16) NOT NULL COMMENT '行为类型（sign 签到、openai_pay 支付）',
   `rebate_desc` varchar(128) NOT NULL COMMENT '返利描述',
   `rebate_type` varchar(16) NOT NULL COMMENT '返利类型（sku 活动库存充值商品、integral 用户活动积分）',
   `rebate_config` varchar(32) NOT NULL COMMENT '返利配置【sku值，积分值】',
-  `out_business_no` varchar(64) NOT NULL COMMENT '业务仿重ID - 外部透传，方便查询使用',
+  `out_business_no` varchar(128) NOT NULL COMMENT '业务仿重ID - 外部透传，方便查询使用',
   `biz_id` varchar(128) NOT NULL COMMENT '业务ID - 拼接的唯一值。拼接 out_business_no + 自身枚举',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -415,13 +438,13 @@ DROP TABLE IF EXISTS `user_behavior_rebate_order_001`;
 
 CREATE TABLE `user_behavior_rebate_order_001` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `order_id` varchar(12) NOT NULL COMMENT '订单ID',
   `behavior_type` varchar(16) NOT NULL COMMENT '行为类型（sign 签到、openai_pay 支付）',
   `rebate_desc` varchar(128) NOT NULL COMMENT '返利描述',
   `rebate_type` varchar(16) NOT NULL COMMENT '返利类型（sku 活动库存充值商品、integral 用户活动积分）',
   `rebate_config` varchar(32) NOT NULL COMMENT '返利配置【sku值，积分值】',
-  `out_business_no` varchar(64) NOT NULL COMMENT '业务仿重ID - 外部透传，方便查询使用',
+  `out_business_no` varchar(128) NOT NULL COMMENT '业务仿重ID - 外部透传，方便查询使用',
   `biz_id` varchar(128) NOT NULL COMMENT '业务ID - 拼接的唯一值。拼接 out_business_no + 自身枚举',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -431,6 +454,18 @@ CREATE TABLE `user_behavior_rebate_order_001` (
   KEY `idx_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户行为返利流水订单表';
 
+LOCK TABLES `user_behavior_rebate_order_001` WRITE;
+/*!40000 ALTER TABLE `user_behavior_rebate_order_001` DISABLE KEYS */;
+
+INSERT INTO `user_behavior_rebate_order_001` (`id`, `user_id`, `order_id`, `behavior_type`, `rebate_desc`, `rebate_type`, `rebate_config`, `out_business_no`, `biz_id`, `create_time`, `update_time`)
+VALUES
+	(1,'http://你的地址.natapp1.cc/api/v1/mall/pay_notify','682275469291','openai_pay','支付返利-积分','sku','9901','292932328126','http://你的地址.natapp1.cc/api/v1/mall/pay_notify_sku_292932328126','2024-10-20 16:27:34','2024-10-20 16:27:34'),
+	(2,'http://你的地址.natapp1.cc/api/v1/mall/pay_notify','198492993575','openai_pay','支付返利-sku额度','integral','10','292932328126','http://你的地址.natapp1.cc/api/v1/mall/pay_notify_integral_292932328126','2024-10-20 16:27:34','2024-10-20 16:27:34'),
+	(3,'http://你的地址.natapp1.cc/api/v1/mall/pay_notify','718547158894','openai_pay','支付返利-积分','sku','9901','178799200110','http://你的地址.natapp1.cc/api/v1/mall/pay_notify_sku_178799200110','2024-10-20 16:29:33','2024-10-20 16:29:33'),
+	(4,'http://你的地址.natapp1.cc/api/v1/mall/pay_notify','210875267620','openai_pay','支付返利-sku额度','integral','10','178799200110','http://你的地址.natapp1.cc/api/v1/mall/pay_notify_integral_178799200110','2024-10-20 16:29:33','2024-10-20 16:29:33');
+
+/*!40000 ALTER TABLE `user_behavior_rebate_order_001` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # 转储表 user_behavior_rebate_order_002
@@ -440,13 +475,13 @@ DROP TABLE IF EXISTS `user_behavior_rebate_order_002`;
 
 CREATE TABLE `user_behavior_rebate_order_002` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `order_id` varchar(12) NOT NULL COMMENT '订单ID',
   `behavior_type` varchar(16) NOT NULL COMMENT '行为类型（sign 签到、openai_pay 支付）',
   `rebate_desc` varchar(128) NOT NULL COMMENT '返利描述',
   `rebate_type` varchar(16) NOT NULL COMMENT '返利类型（sku 活动库存充值商品、integral 用户活动积分）',
   `rebate_config` varchar(32) NOT NULL COMMENT '返利配置【sku值，积分值】',
-  `out_business_no` varchar(64) NOT NULL COMMENT '业务仿重ID - 外部透传，方便查询使用',
+  `out_business_no` varchar(128) NOT NULL COMMENT '业务仿重ID - 外部透传，方便查询使用',
   `biz_id` varchar(128) NOT NULL COMMENT '业务ID - 拼接的唯一值。拼接 out_business_no + 自身枚举',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -465,13 +500,13 @@ DROP TABLE IF EXISTS `user_behavior_rebate_order_003`;
 
 CREATE TABLE `user_behavior_rebate_order_003` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `order_id` varchar(12) NOT NULL COMMENT '订单ID',
   `behavior_type` varchar(16) NOT NULL COMMENT '行为类型（sign 签到、openai_pay 支付）',
   `rebate_desc` varchar(128) NOT NULL COMMENT '返利描述',
   `rebate_type` varchar(16) NOT NULL COMMENT '返利类型（sku 活动库存充值商品、integral 用户活动积分）',
   `rebate_config` varchar(32) NOT NULL COMMENT '返利配置【sku值，积分值】',
-  `out_business_no` varchar(64) NOT NULL COMMENT '业务仿重ID - 外部透传，方便查询使用',
+  `out_business_no` varchar(128) NOT NULL COMMENT '业务仿重ID - 外部透传，方便查询使用',
   `biz_id` varchar(128) NOT NULL COMMENT '业务ID - 拼接的唯一值。拼接 out_business_no + 自身枚举',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -490,7 +525,7 @@ DROP TABLE IF EXISTS `user_credit_account`;
 
 CREATE TABLE `user_credit_account` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `total_amount` decimal(10,2) NOT NULL COMMENT '总积分，显示总账户值，记得一个人获得的总积分',
   `available_amount` decimal(10,2) NOT NULL COMMENT '可用积分，每次扣减的值',
   `account_status` varchar(8) NOT NULL COMMENT '账户状态【open - 可用，close - 冻结】',
@@ -508,7 +543,7 @@ DROP TABLE IF EXISTS `user_credit_order_000`;
 
 CREATE TABLE `user_credit_order_000` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `order_id` varchar(12) NOT NULL COMMENT '订单ID',
   `trade_name` varchar(32) NOT NULL COMMENT '交易名称',
   `trade_type` varchar(8) NOT NULL DEFAULT 'forward' COMMENT '交易类型；forward-正向、reverse-逆向',
@@ -531,7 +566,7 @@ DROP TABLE IF EXISTS `user_credit_order_001`;
 
 CREATE TABLE `user_credit_order_001` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `order_id` varchar(12) NOT NULL COMMENT '订单ID',
   `trade_name` varchar(32) NOT NULL COMMENT '交易名称',
   `trade_type` varchar(8) NOT NULL DEFAULT 'forward' COMMENT '交易类型；forward-正向、reverse-逆向',
@@ -554,7 +589,7 @@ DROP TABLE IF EXISTS `user_credit_order_002`;
 
 CREATE TABLE `user_credit_order_002` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `order_id` varchar(12) NOT NULL COMMENT '订单ID',
   `trade_name` varchar(32) NOT NULL COMMENT '交易名称',
   `trade_type` varchar(8) NOT NULL DEFAULT 'forward' COMMENT '交易类型；forward-正向、reverse-逆向',
@@ -577,7 +612,7 @@ DROP TABLE IF EXISTS `user_credit_order_003`;
 
 CREATE TABLE `user_credit_order_003` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `order_id` varchar(12) NOT NULL COMMENT '订单ID',
   `trade_name` varchar(32) NOT NULL COMMENT '交易名称',
   `trade_type` varchar(8) NOT NULL DEFAULT 'forward' COMMENT '交易类型；forward-正向、reverse-逆向',
@@ -600,7 +635,7 @@ DROP TABLE IF EXISTS `user_raffle_order_000`;
 
 CREATE TABLE `user_raffle_order_000` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
   `activity_name` varchar(64) NOT NULL COMMENT '活动名称',
   `strategy_id` bigint(8) NOT NULL COMMENT '抽奖策略ID',
@@ -623,7 +658,7 @@ DROP TABLE IF EXISTS `user_raffle_order_001`;
 
 CREATE TABLE `user_raffle_order_001` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
   `activity_name` varchar(64) NOT NULL COMMENT '活动名称',
   `strategy_id` bigint(8) NOT NULL COMMENT '抽奖策略ID',
@@ -646,7 +681,7 @@ DROP TABLE IF EXISTS `user_raffle_order_002`;
 
 CREATE TABLE `user_raffle_order_002` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
   `activity_name` varchar(64) NOT NULL COMMENT '活动名称',
   `strategy_id` bigint(8) NOT NULL COMMENT '抽奖策略ID',
@@ -669,7 +704,7 @@ DROP TABLE IF EXISTS `user_raffle_order_003`;
 
 CREATE TABLE `user_raffle_order_003` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
   `activity_id` bigint(12) NOT NULL COMMENT '活动ID',
   `activity_name` varchar(64) NOT NULL COMMENT '活动名称',
   `strategy_id` bigint(8) NOT NULL COMMENT '抽奖策略ID',
