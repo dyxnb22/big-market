@@ -1,7 +1,10 @@
 package cn.bugstack.trigger.api;
 
 import cn.bugstack.trigger.api.dto.ESUserRaffleOrderResponseDTO;
+import cn.bugstack.trigger.api.dto.RaffleActivityStageResponseDTO;
+import cn.bugstack.trigger.api.dto.UpdateStageActivity2ActiveRequestDTO;
 import cn.bugstack.trigger.api.response.Response;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -13,5 +16,14 @@ import java.util.List;
 public interface IErpOperateService {
 
     Response<List<ESUserRaffleOrderResponseDTO>> queryUserRaffleOrder();
+
+    /**
+     * 上架活动，上架后驱动装配
+     *
+     * @param requestDTO 上架流水ID
+     */
+    Response<Boolean> updateStageActivity2Active(UpdateStageActivity2ActiveRequestDTO requestDTO);
+
+    Response<List<RaffleActivityStageResponseDTO>> queryRaffleActivityStageList();
 
 }

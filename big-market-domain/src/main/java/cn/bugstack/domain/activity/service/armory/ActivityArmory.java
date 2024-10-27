@@ -1,7 +1,7 @@
 package cn.bugstack.domain.activity.service.armory;
 
 import cn.bugstack.domain.activity.model.entity.ActivitySkuEntity;
-import cn.bugstack.domain.activity.repository.IActivityRepository;
+import cn.bugstack.domain.activity.adapter.repository.IActivityRepository;
 import cn.bugstack.types.common.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Fuzhengwei bugstack.cn @小傅哥

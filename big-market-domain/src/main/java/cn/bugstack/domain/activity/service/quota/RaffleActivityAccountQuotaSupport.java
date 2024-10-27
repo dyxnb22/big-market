@@ -3,7 +3,7 @@ package cn.bugstack.domain.activity.service.quota;
 import cn.bugstack.domain.activity.model.entity.ActivityCountEntity;
 import cn.bugstack.domain.activity.model.entity.ActivityEntity;
 import cn.bugstack.domain.activity.model.entity.ActivitySkuEntity;
-import cn.bugstack.domain.activity.repository.IActivityRepository;
+import cn.bugstack.domain.activity.adapter.repository.IActivityRepository;
 import cn.bugstack.domain.activity.service.quota.rule.factory.DefaultActivityChainFactory;
 
 /**

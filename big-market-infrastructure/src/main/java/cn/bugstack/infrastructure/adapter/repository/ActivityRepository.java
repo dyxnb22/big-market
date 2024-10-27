@@ -1,13 +1,13 @@
 package cn.bugstack.infrastructure.adapter.repository;
 
-import cn.bugstack.domain.activity.event.ActivitySkuStockZeroMessageEvent;
+import cn.bugstack.domain.activity.adapter.event.ActivitySkuStockZeroMessageEvent;
 import cn.bugstack.domain.activity.model.aggregate.CreatePartakeOrderAggregate;
 import cn.bugstack.domain.activity.model.aggregate.CreateQuotaOrderAggregate;
 import cn.bugstack.domain.activity.model.entity.*;
 import cn.bugstack.domain.activity.model.valobj.ActivitySkuStockKeyVO;
 import cn.bugstack.domain.activity.model.valobj.ActivityStateVO;
 import cn.bugstack.domain.activity.model.valobj.UserRaffleOrderStateVO;
-import cn.bugstack.domain.activity.repository.IActivityRepository;
+import cn.bugstack.domain.activity.adapter.repository.IActivityRepository;
 import cn.bugstack.infrastructure.dao.*;
 import cn.bugstack.infrastructure.dao.po.*;
 import cn.bugstack.infrastructure.event.EventPublisher;
@@ -62,6 +62,8 @@ public class ActivityRepository implements IActivityRepository {
     private TransactionTemplate transactionTemplate;
     @Resource
     private IUserRaffleOrderDao userRaffleOrderDao;
+    @Resource
+    private IRaffleActivityStageDao raffleActivityStageDao;
     @Resource
     private IDBRouterStrategy dbRouter;
     @Resource
@@ -278,7 +280,7 @@ public class ActivityRepository implements IActivityRepository {
             log.info("活动sku库存加锁失败 {}", lockKey);
         }
 
-        if (surplus == 0){
+        if (surplus == 0) {
             // 库存消耗没了以后，发送MQ消息，更新数据库库存
             eventPublisher.publish(activitySkuStockZeroMessageEvent.topic(), activitySkuStockZeroMessageEvent.buildEventMessage(sku));
         }
@@ -770,6 +772,51 @@ public class ActivityRepository implements IActivityRepository {
         } finally {
             dbRouter.clear();
         }
+    }
+
+    @Override
+    public void appendStageActivity(String channel, String source, Long activityId) {
+        RaffleActivityStage raffleActivityStage = new RaffleActivityStage();
+        raffleActivityStage.setChannel(channel);
+        raffleActivityStage.setSource(source);
+        raffleActivityStage.setActivityId(activityId);
+        raffleActivityStageDao.insert(raffleActivityStage);
+    }
+
+    @Override
+    public void updateStageActivity2Active(Long id) {
+        // 更新上架状态
+        raffleActivityStageDao.updateStageActivity2ActiveById(id);
+    }
+
+    @Override
+    public Long queryStageActiveBySC(String channel, String source) {
+        RaffleActivityStage raffleActivityStage = new RaffleActivityStage();
+        raffleActivityStage.setChannel(channel);
+        raffleActivityStage.setSource(source);
+        return raffleActivityStageDao.queryStageActiveBySC(raffleActivityStage);
+    }
+
+    @Override
+    public List<RaffleActivityStageEntity> queryStageActivityList() {
+        List<RaffleActivityStageEntity> raffleActivityStageEntities = new ArrayList<>();
+        List<RaffleActivityStage> list = raffleActivityStageDao.queryStageActivityList();
+        for (RaffleActivityStage raffleActivityStage : list) {
+            RaffleActivityStageEntity raffleActivityStageEntity = RaffleActivityStageEntity.builder()
+                    .id(raffleActivityStage.getId())
+                    .channel(raffleActivityStage.getChannel())
+                    .source(raffleActivityStage.getSource())
+                    .activityId(raffleActivityStage.getActivityId())
+                    .state(raffleActivityStage.getState())
+                    .build();
+            raffleActivityStageEntities.add(raffleActivityStageEntity);
+        }
+        return raffleActivityStageEntities;
+    }
+
+    @Override
+    public Long queryStageActivity2ActiveById(Long id) {
+        return raffleActivityStageDao.queryStageActivity2ActiveById(id);
     }
 
 }

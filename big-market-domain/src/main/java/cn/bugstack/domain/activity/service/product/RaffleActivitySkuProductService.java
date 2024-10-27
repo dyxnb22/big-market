@@ -1,7 +1,7 @@
 package cn.bugstack.domain.activity.service.product;
 
 import cn.bugstack.domain.activity.model.entity.SkuProductEntity;
-import cn.bugstack.domain.activity.repository.IActivityRepository;
+import cn.bugstack.domain.activity.adapter.repository.IActivityRepository;
 import cn.bugstack.domain.activity.service.IRaffleActivitySkuProductService;
 import org.springframework.stereotype.Service;
 

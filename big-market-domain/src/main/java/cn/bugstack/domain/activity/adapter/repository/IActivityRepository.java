@@ -1,4 +1,4 @@
-package cn.bugstack.domain.activity.repository;
+package cn.bugstack.domain.activity.adapter.repository;
 
 import cn.bugstack.domain.activity.model.aggregate.CreatePartakeOrderAggregate;
 import cn.bugstack.domain.activity.model.aggregate.CreateQuotaOrderAggregate;
@@ -71,5 +71,15 @@ public interface IActivityRepository {
     List<SkuProductEntity> querySkuProductEntityListByActivityId(Long activityId);
 
     BigDecimal queryUserCreditAccountAmount(String userId);
+
+    void appendStageActivity(String channel, String source, Long activityId);
+
+    void updateStageActivity2Active(Long id);
+
+    Long queryStageActiveBySC(String channel, String source);
+
+    List<RaffleActivityStageEntity> queryStageActivityList();
+
+    Long queryStageActivity2ActiveById(Long id);
 
 }

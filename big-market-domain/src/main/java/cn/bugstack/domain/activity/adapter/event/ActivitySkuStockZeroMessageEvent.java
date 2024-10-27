@@ -1,4 +1,4 @@
-package cn.bugstack.domain.activity.event;
+package cn.bugstack.domain.activity.adapter.event;
 
 import cn.bugstack.types.event.BaseEvent;
 import org.apache.commons.lang3.RandomStringUtils;

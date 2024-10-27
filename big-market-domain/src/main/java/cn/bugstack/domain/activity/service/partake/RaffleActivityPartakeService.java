@@ -3,7 +3,7 @@ package cn.bugstack.domain.activity.service.partake;
 import cn.bugstack.domain.activity.model.aggregate.CreatePartakeOrderAggregate;
 import cn.bugstack.domain.activity.model.entity.*;
 import cn.bugstack.domain.activity.model.valobj.UserRaffleOrderStateVO;
-import cn.bugstack.domain.activity.repository.IActivityRepository;
+import cn.bugstack.domain.activity.adapter.repository.IActivityRepository;
 import cn.bugstack.types.enums.ResponseCode;
 import cn.bugstack.types.exception.AppException;
 import org.apache.commons.lang3.RandomStringUtils;
