@@ -1,5 +1,5 @@
 server:
-  port: 8091
+  port: 8092
   tomcat:
     mbeanregistry:
       enabled: true
@@ -20,10 +20,10 @@ app:
 # Spring 配置；rabbitmq
 spring:
   rabbitmq:
-    addresses: 116.198.36.253
+    addresses: 117.72.38.125
     port: 5672
     username: admin
-    password: admin
+    password: 12qw!@QW
     listener:
       simple:
         prefetch: 1 # 每次投递n个消息，消费完在投递n个
@@ -65,7 +65,7 @@ mini-db-router:
         driver-class-name: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://mysql:3306/big_market?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
         username: root
-        password: 123456
+        password: 12qw!@QW
         type-class-name: com.zaxxer.hikari.HikariDataSource
         pool:
           pool-name: Retail_HikariCP
@@ -80,7 +80,7 @@ mini-db-router:
         driver-class-name: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://mysql:3306/big_market_01?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
         username: root
-        password: 123456
+        password: 12qw!@QW
         type-class-name: com.zaxxer.hikari.HikariDataSource
         pool:
           pool-name: Retail_HikariCP
@@ -95,7 +95,7 @@ mini-db-router:
         driver-class-name: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://mysql:3306/big_market_02?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
         username: root
-        password: 123456
+        password: 12qw!@QW
         type-class-name: com.zaxxer.hikari.HikariDataSource
         pool:
           pool-name: Retail_HikariCP
@@ -147,7 +147,7 @@ zookeeper:
   sdk:
     config:
       # 状态；true = 开启、false 关闭
-      enable: true
+      enable: false
       connect-string: zookeeper:2181
       base-sleep-time-ms: 1000
       max-retries: 3
@@ -175,6 +175,16 @@ xxl:
       logpath: ./data/applogs/xxl-job/jobhandler
       # 执行器日志文件保存天数 [选填] ： 过期日志自动清理, 限制值大于等于3时生效; 否则, 如-1, 关闭自动清理功能；
       logretentiondays: 30
+
+# 外部接口调用配置
+gateway:
+  config:
+    # 状态；true = 开启、false 关闭
+    enable: true
+    apiHost: http://chatgpt-data-app:8091
+    # big-market 大营销接口调用配置
+    big-market-appId: big-market
+    big-market-appToken: 6ec604541f8b1ce4a
 
 # 监控配置 Prometheus + Grafana
 management:
