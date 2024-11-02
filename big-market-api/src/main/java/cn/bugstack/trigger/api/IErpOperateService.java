@@ -4,7 +4,6 @@ import cn.bugstack.trigger.api.dto.ESUserRaffleOrderResponseDTO;
 import cn.bugstack.trigger.api.dto.RaffleActivityStageResponseDTO;
 import cn.bugstack.trigger.api.dto.UpdateStageActivity2ActiveRequestDTO;
 import cn.bugstack.trigger.api.response.Response;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 

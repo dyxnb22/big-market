@@ -4,7 +4,7 @@
 
     <groupId>cn.bugstack</groupId>
     <artifactId>big-market</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -182,27 +182,32 @@
             <dependency>
                 <groupId>cn.bugstack</groupId>
                 <artifactId>big-market-domain</artifactId>
-                <version>1.0</version>
+                <version>1.1</version>
             </dependency>
             <dependency>
                 <groupId>cn.bugstack</groupId>
                 <artifactId>big-market-infrastructure</artifactId>
-                <version>1.0</version>
+                <version>1.1</version>
             </dependency>
             <dependency>
                 <groupId>cn.bugstack</groupId>
                 <artifactId>big-market-types</artifactId>
-                <version>1.0</version>
+                <version>1.1</version>
             </dependency>
             <dependency>
                 <groupId>cn.bugstack</groupId>
                 <artifactId>big-market-trigger</artifactId>
-                <version>1.0</version>
+                <version>1.1</version>
             </dependency>
             <dependency>
                 <groupId>cn.bugstack</groupId>
                 <artifactId>big-market-querys</artifactId>
-                <version>1.0</version>
+                <version>1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.bugstack</groupId>
+                <artifactId>big-market-api</artifactId>
+                <version>1.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
