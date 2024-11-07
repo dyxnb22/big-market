@@ -43,7 +43,7 @@ public class StrategyArmoryDispatch extends AbstractStrategyAlgorithm {
         // 1. 概率最小值
         BigDecimal minAwardRate = minAwardRate(strategyAwardEntities);
         // 2. 概率范围值
-        double rateRange = convert(minAwardRate.doubleValue());
+        double rateRange = convert(BigDecimal.valueOf(minAwardRate.doubleValue()));
         // 3. 根据概率值范围选择算法
         if (rateRange <= ALGORITHM_THRESHOLD_VALUE) {
             IAlgorithm o1Algorithm = algorithmMap.get(AbstractAlgorithm.Algorithm.O1.getKey());
