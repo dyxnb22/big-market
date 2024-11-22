@@ -72,6 +72,10 @@ public class RebateMessageCustomer {
                 log.warn("监听用户行为返利消息，消费重复 topic: {} message: {}", topic, message, e);
                 return;
             }
+            if (ResponseCode.ACTIVITY_SKU_STOCK_ERROR.getCode().equals(e.getCode())) {
+                log.warn("监听用户行为返利消息，活动库存不足 topic: {} message: {}", topic, message, e);
+                return;
+            }
             throw e;
         } catch (Exception e) {
             log.error("监听用户行为返利消息，消费失败 topic: {} message: {}", topic, message, e);
