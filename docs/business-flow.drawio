@@ -1,0 +1,1104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Big-Market Marketing Raffle System — Complete Business Flow Diagram
+  大市场营销抽奖系统 — 完整业务流程图
+
+  How to open:
+    1. Go to https://app.diagrams.net  (draw.io)
+    2. File > Open From > Device, select this file
+    OR
+    3. Drag-and-drop this file into the draw.io browser window
+
+  Diagram panels:
+    Panel 1 (top)    — System Architecture Layers
+    Panel 2          — Complete Raffle Main Flow
+    Panel 3          — Behavior Rebate Flow + Strategy/Activity Armory Flow
+    Panel 4 (bottom) — Stock Eventual Consistency + DB Sharding Architecture
+-->
+<mxfile host="app.diagrams.net" modified="2026-03-11" version="21.6.5">
+  <diagram name="Big-Market Business Flow" id="big-market-flow">
+    <mxGraphModel dx="1800" dy="900" grid="1" gridSize="10" guides="1"
+                  tooltips="1" connect="1" arrows="1" fold="1"
+                  page="1" pageScale="1" pageWidth="2000" pageHeight="3000"
+                  math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ================================================ -->
+        <!-- PANEL 1: System Architecture Layers              -->
+        <!-- ================================================ -->
+
+        <!-- Panel title -->
+        <mxCell id="p1-title" value="Panel 1 — System Architecture Layers"
+                style="text;html=1;strokeColor=none;fillColor=none;align=center;
+                       verticalAlign=middle;whiteSpace=wrap;rounded=0;
+                       fontSize=16;fontStyle=1;fontColor=#2C3E50;"
+                vertex="1" parent="1">
+          <mxGeometry x="50" y="10" width="600" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- Layer 1: Client -->
+        <mxCell id="L1" value="&lt;b&gt;① Client Layer&lt;/b&gt;&lt;br/&gt;H5 / App / Mini-program / OpenAI caller&lt;br/&gt;HTTP REST API  /  Dubbo RPC"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#34495E;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;"
+                vertex="1" parent="1">
+          <mxGeometry x="50" y="60" width="600" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrow down -->
+        <mxCell id="a-L1L2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;
+                orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;
+                exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;
+                endArrow=open;endFill=0;startArrow=open;startFill=0;"
+                edge="1" parent="1" source="L1" target="L2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Layer 2: Trigger -->
+        <mxCell id="L2" value="&lt;b&gt;② Trigger Layer&lt;/b&gt;&lt;br/&gt;HTTP Controllers: RaffleActivity / Strategy / ERP / DCC&lt;br/&gt;MQ Consumers: SendAward / Rebate / Credit / StockZero&lt;br/&gt;XXL-Jobs: StockSync / SendMessageTask"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4A90D9;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;"
+                vertex="1" parent="1">
+          <mxGeometry x="50" y="160" width="600" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="a-L2L3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;
+                endArrow=open;endFill=0;startArrow=open;startFill=0;"
+                edge="1" parent="1" source="L2" target="L3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Layer 3: Domain -->
+        <mxCell id="L3" value="&lt;b&gt;③ Domain Layer  (DDD Core)&lt;/b&gt;&lt;br/&gt;Strategy Domain: Chain-of-Responsibility + Decision-Tree + O1/OLogN algorithm&lt;br/&gt;Activity Domain: 3-level quota (total / monthly / daily)&lt;br/&gt;Award Domain: strategy-pattern award dispatch&lt;br/&gt;Credit Domain: credit account &amp; transaction flow&lt;br/&gt;Rebate Domain: behavior-driven rebate (sign-in, etc.)&lt;br/&gt;Task Domain: MQ compensation tasks"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#27AE60;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;"
+                vertex="1" parent="1">
+          <mxGeometry x="50" y="270" width="600" height="110" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="a-L3L4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;
+                endArrow=open;endFill=0;startArrow=open;startFill=0;"
+                edge="1" parent="1" source="L3" target="L4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Layer 4: Infrastructure -->
+        <mxCell id="L4" value="&lt;b&gt;④ Infrastructure Layer&lt;/b&gt;&lt;br/&gt;Repository impl (adapt domain interfaces to storage)&lt;br/&gt;DAO: MyBatis + 2-DB / 4-table sharding (mini-db-router)&lt;br/&gt;Redis: Redisson cache + atomic counters&lt;br/&gt;RabbitMQ: event-driven + idempotent consumers&lt;br/&gt;Elasticsearch: CQRS read-side"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;"
+                vertex="1" parent="1">
+          <mxGeometry x="50" y="410" width="600" height="100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="a-L4L5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;
+                endArrow=open;endFill=0;startArrow=open;startFill=0;"
+                edge="1" parent="1" source="L4" target="L5">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Layer 5: Storage -->
+        <mxCell id="L5" value="&lt;b&gt;⑤ Storage Layer&lt;/b&gt;&lt;br/&gt;MySQL: big_market (shared) + big_market_01/02 (sharded by userId)&lt;br/&gt;Redis: strategy cache + stock counters + distributed locks&lt;br/&gt;RabbitMQ: async event bus&lt;br/&gt;Elasticsearch: order full-text search"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E74C3C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;"
+                vertex="1" parent="1">
+          <mxGeometry x="50" y="540" width="600" height="90" as="geometry"/>
+        </mxCell>
+
+
+        <!-- ================================================ -->
+        <!-- PANEL 2: Complete Raffle Main Flow               -->
+        <!-- ================================================ -->
+
+        <mxCell id="p2-title" value="Panel 2 — Complete Raffle Main Flow"
+                style="text;html=1;strokeColor=none;fillColor=none;align=center;
+                       verticalAlign=middle;whiteSpace=wrap;rounded=0;
+                       fontSize=16;fontStyle=1;fontColor=#2C3E50;"
+                vertex="1" parent="1">
+          <mxGeometry x="50" y="680" width="1700" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- Entry -->
+        <mxCell id="R-start" value="User  POST /api/v1/raffle/activity/draw"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2C3E50;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=12;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="730" width="360" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- JWT Auth -->
+        <mxCell id="R-jwt" value="JWT Token Auth  (AuthService.checkToken)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4A90D9;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="810" width="360" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-start-jwt" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-start" target="R-jwt">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- DCC decision -->
+        <mxCell id="R-dcc" value="DCC degrade switch?"
+                style="rhombus;whiteSpace=wrap;html=1;fillColor=#F39C12;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="230" y="880" width="300" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-jwt-dcc" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-jwt" target="R-dcc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- DCC error -->
+        <mxCell id="R-dcc-err" value="Return ERR_DCC (degraded)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E74C3C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;"
+                vertex="1" parent="1">
+          <mxGeometry x="60" y="895" width="150" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-dcc-err" value="ON" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-dcc" target="R-dcc-err">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Rate limit -->
+        <mxCell id="R-rate" value="Rate limit exceeded?"
+                style="rhombus;whiteSpace=wrap;html=1;fillColor=#F39C12;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="230" y="980" width="300" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-dcc-rate" value="OFF (pass)" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-dcc" target="R-rate">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-rate-err" value="Return ERR_RATE (rate limited)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E74C3C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;"
+                vertex="1" parent="1">
+          <mxGeometry x="60" y="995" width="150" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-rate-err" value="YES" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-rate" target="R-rate-err">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Hystrix -->
+        <mxCell id="R-hyst" value="@HystrixCommand  (circuit breaker)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4A90D9;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="1080" width="360" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-rate-hyst" value="NO (pass)" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-rate" target="R-hyst">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Activity Domain Group -->
+        <mxCell id="g-activity" value="Activity Domain"
+                style="swimlane;whiteSpace=wrap;html=1;fillColor=#27AE6015;
+                       strokeColor=#27AE60;strokeWidth=2;fontColor=#27AE60;
+                       fontSize=11;fontStyle=3;startSize=25;"
+                vertex="1" parent="1">
+          <mxGeometry x="620" y="730" width="500" height="430" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-partake" value="RaffleActivityPartakeService.createOrder()"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#27AE60;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="650" y="760" width="440" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-hyst-partake" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-hyst" target="R-partake">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-act1" value="1. Validate total account quota  (activity_account)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="650" y="825" width="440" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-partake-act1" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-partake" target="R-act1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-act2" value="2. Validate monthly quota  (account_month, create if absent)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="650" y="873" width="440" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-act1-act2" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-act1" target="R-act2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-act3" value="3. Validate daily quota  (account_day, create if absent)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="650" y="921" width="440" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-act2-act3" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-act2" target="R-act3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-act4" value="4. [TX] insert user_raffle_order + update accounts"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C0392B;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="650" y="969" width="440" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-act3-act4" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-act3" target="R-act4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Strategy Domain — Chain Group -->
+        <mxCell id="g-chain" value="Strategy Domain — Chain of Responsibility"
+                style="swimlane;whiteSpace=wrap;html=1;fillColor=#1ABC9C15;
+                       strokeColor=#1ABC9C;strokeWidth=2;fontColor=#1ABC9C;
+                       fontSize=11;fontStyle=3;startSize=25;"
+                vertex="1" parent="1">
+          <mxGeometry x="1180" y="730" width="520" height="430" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-raffle" value="DefaultRaffleStrategy.performRaffle()"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ABC9C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="1200" y="760" width="480" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-act4-raffle" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-act4" target="R-raffle">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-black" value="BlackListLogicChain&#xa;Blacklist check"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ABC9C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="1200" y="825" width="140" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="R-weight" value="RuleWeightLogicChain&#xa;Weighted raffle"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ABC9C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="1370" y="825" width="140" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="R-default" value="DefaultLogicChain&#xa;O1 / OLogN random"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ABC9C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="1540" y="825" width="140" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-raffle-black" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-raffle" target="R-black">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-black-weight" value="miss" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-black" target="R-weight">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-weight-default" value="miss" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-weight" target="R-default">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-awardid" value="Award matched  —  awardId obtained"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2ECC71;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="1200" y="910" width="480" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-default-awardid" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-default" target="R-awardid">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Decision Tree Group -->
+        <mxCell id="g-tree" value="Strategy Domain — Decision Tree"
+                style="swimlane;whiteSpace=wrap;html=1;fillColor=#1ABC9C15;
+                       strokeColor=#1ABC9C;strokeWidth=2;fontColor=#1ABC9C;
+                       fontSize=11;fontStyle=3;startSize=25;"
+                vertex="1" parent="1">
+          <mxGeometry x="620" y="1200" width="500" height="350" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-tree" value="DefaultTreeFactory  (decision tree)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ABC9C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="650" y="1230" width="440" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-awardid-tree" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-awardid" target="R-tree">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-lock" value="RuleLockLogicTreeNode&#xa;N-raffle lock: block if count &lt; N"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ABC9C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="650" y="1295" width="440" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-tree-lock" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-tree" target="R-lock">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-stock" value="RuleStockLogicTreeNode&#xa;Stock check: Redis AtomicLong DECR"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ABC9C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="650" y="1355" width="440" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-lock-stock" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-lock" target="R-stock">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-luck" value="RuleLuckAwardLogicTreeNode&#xa;Fallback / luck award"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ABC9C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="650" y="1415" width="440" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-stock-luck" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-stock" target="R-luck">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-final" value="Final  RaffleAwardEntity  (award result)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#27AE60;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="650" y="1475" width="440" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-luck-final" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-luck" target="R-final">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Award Domain Group -->
+        <mxCell id="g-award" value="Award Domain"
+                style="swimlane;whiteSpace=wrap;html=1;fillColor=#27AE6015;
+                       strokeColor=#27AE60;strokeWidth=2;fontColor=#27AE60;
+                       fontSize=11;fontStyle=3;startSize=25;"
+                vertex="1" parent="1">
+          <mxGeometry x="1180" y="1200" width="520" height="380" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-save" value="AwardService.saveUserAwardRecord()"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#27AE60;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="1200" y="1230" width="480" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-final-save" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-final" target="R-save">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-aw1" value="1. [TX] insert user_award_record"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="1200" y="1295" width="480" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-save-aw1" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-save" target="R-aw1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-aw2" value="2. [TX] insert task  (compensation)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="1200" y="1343" width="480" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-aw1-aw2" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-aw1" target="R-aw2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-aw3" value="3. Publish SendAwardMessageEvent  →  RabbitMQ"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9B59B6;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="1200" y="1391" width="480" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-aw2-aw3" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-aw2" target="R-aw3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-aw4" value="4. Mark task status = completed"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="1200" y="1439" width="480" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-aw3-aw4" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-aw3" target="R-aw4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Return to user -->
+        <mxCell id="R-return" value="Return awardId / awardTitle to user  [OK]"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2C3E50;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=12;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="1620" width="360" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-hyst-return" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-save" target="R-return">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Async Award Dispatch Group -->
+        <mxCell id="g-async" value="Async Award Dispatch  (RabbitMQ)"
+                style="swimlane;whiteSpace=wrap;html=1;fillColor=#9B59B615;
+                       strokeColor=#9B59B6;strokeWidth=2;fontColor=#9B59B6;
+                       fontSize=11;fontStyle=3;startSize=25;"
+                vertex="1" parent="1">
+          <mxGeometry x="1180" y="1620" width="520" height="420" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-consumer" value="SendAwardCustomer  (MQ Consumer)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9B59B6;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="1200" y="1650" width="480" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-aw3-consumer" style="dashed=1;endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-aw3" target="R-consumer">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1440" y="1600"/>
+              <mxPoint x="1440" y="1650"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="R-dist" value="distributeAward()  (strategy pattern)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#27AE60;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;"
+                vertex="1" parent="1">
+          <mxGeometry x="1200" y="1715" width="480" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-consumer-dist" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-consumer" target="R-dist">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-credit-aw" value="UserCreditRandomAward&#xa;Random credit reward"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#27AE60;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="1200" y="1785" width="150" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="R-openai-aw" value="OpenAIAccountAdjustQuotaAward&#xa;OpenAI quota adjust"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#27AE60;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="1375" y="1785" width="150" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="R-other-aw" value="... Other award types"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="1540" y="1785" width="140" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-dist-credit" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-dist" target="R-credit-aw">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-dist-openai" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-dist" target="R-openai-aw">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-dist-other" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-dist" target="R-other-aw">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-aw-done" value="Update user_award_record  state = COMPLETED"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="1200" y="1860" width="480" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-credit-done" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-credit-aw" target="R-aw-done">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-openai-done" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-openai-aw" target="R-aw-done">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-other-done" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-other-aw" target="R-aw-done">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-credit-flow" value="CreditAdjustService.createOrder()&#xa;→ CreditAdjustSuccessMessageEvent → MQ&#xa;→ CreditAdjustSuccessCustomer&#xa;→ Update user_credit_account balance"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9B59B6;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="1200" y="1920" width="480" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-done-credit" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="R-aw-done" target="R-credit-flow">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Scheduled Jobs -->
+        <mxCell id="R-job1" value="UpdateActivitySkuStockJob  (every minute)&#xa;Drain Redis queue → batch update MySQL stock"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E74C3C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="50" y="1700" width="400" height="55" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R-job2" value="SendMessageTaskJob  (every minute)&#xa;Scan task table → re-publish failed MQ msgs"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E74C3C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="50" y="1780" width="400" height="55" as="geometry"/>
+        </mxCell>
+
+
+        <!-- ================================================ -->
+        <!-- PANEL 3: Rebate + Armory Flows                   -->
+        <!-- ================================================ -->
+
+        <mxCell id="p3-title" value="Panel 3 — Behavior Rebate Flow  &amp;  Strategy/Activity Armory Flow"
+                style="text;html=1;strokeColor=none;fillColor=none;align=center;
+                       verticalAlign=middle;whiteSpace=wrap;rounded=0;
+                       fontSize=16;fontStyle=1;fontColor=#2C3E50;"
+                vertex="1" parent="1">
+          <mxGeometry x="50" y="2100" width="1700" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- Rebate sub-flow -->
+        <mxCell id="g-rebate" value="Behavior Rebate Flow  (e.g. sign-in → reward)"
+                style="swimlane;whiteSpace=wrap;html=1;fillColor=#27AE6015;
+                       strokeColor=#27AE60;strokeWidth=2;fontColor=#27AE60;
+                       fontSize=11;fontStyle=3;startSize=25;"
+                vertex="1" parent="1">
+          <mxGeometry x="50" y="2150" width="780" height="750" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="RB-start" value="User POST /calendar_sign_rebate"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2C3E50;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="2185" width="400" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="RB-ctrl" value="RaffleActivityController.calendarSignRebate()"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4A90D9;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="2250" width="400" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-rb-start-ctrl" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="RB-start" target="RB-ctrl">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="RB-svc" value="BehaviorRebateService.createOrder(behaviorEntity)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#27AE60;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="2315" width="400" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-rb-ctrl-svc" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="RB-ctrl" target="RB-svc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="RB-s1" value="Query daily_behavior_rebate config"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="2380" width="400" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-rb-svc-s1" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="RB-svc" target="RB-s1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="RB-s2" value="[TX] insert rebate_order + task"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C0392B;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="2428" width="400" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-rb-s1-s2" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="RB-s1" target="RB-s2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="RB-s3" value="Publish SendRebateMessageEvent  →  RabbitMQ"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9B59B6;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="2476" width="400" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-rb-s2-s3" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="RB-s2" target="RB-s3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="RB-consumer" value="RebateMessageCustomer  (MQ Consumer)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9B59B6;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="2545" width="400" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-rb-s3-consumer" style="dashed=1;endArrow=block;endFill=1;"
+                edge="1" parent="1" source="RB-s3" target="RB-consumer">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="RB-sku" value="type='sku'&#xa;ActivityAccountQuotaService&#xa;.createOrder(SkuRechargeEntity)&#xa;→ Deduct SKU stock"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#27AE60;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="100" y="2620" width="240" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="RB-integral" value="type='integral'&#xa;CreditAdjustService&#xa;.createOrder(TradeEntity)&#xa;→ Update credit_account"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#27AE60;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="460" y="2620" width="240" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-rb-consumer-sku" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="RB-consumer" target="RB-sku">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-rb-consumer-int" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="RB-consumer" target="RB-integral">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="RB-done" value="Rebate Complete  [OK]"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2C3E50;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="2730" width="400" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-rb-sku-done" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="RB-sku" target="RB-done">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-rb-int-done" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="RB-integral" target="RB-done">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="RB-job" value="SendMessageTaskJob (fallback)&#xa;Scan task table, re-publish failed MQ msgs"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E74C3C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="2800" width="400" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- Armory sub-flow -->
+        <mxCell id="g-armory" value="Strategy / Activity Armory  (Cache Warm-up)"
+                style="swimlane;whiteSpace=wrap;html=1;fillColor=#4A90D915;
+                       strokeColor=#4A90D9;strokeWidth=2;fontColor=#4A90D9;
+                       fontSize=11;fontStyle=3;startSize=25;"
+                vertex="1" parent="1">
+          <mxGeometry x="880" y="2150" width="850" height="750" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="AR-start" value="GET /strategy_armory?strategyId=xxx"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2C3E50;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="950" y="2185" width="480" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="AR-ctrl" value="RaffleStrategyController.strategyArmory()"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4A90D9;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;"
+                vertex="1" parent="1">
+          <mxGeometry x="950" y="2250" width="480" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-ar-start-ctrl" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="AR-start" target="AR-ctrl">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="AR-svc" value="StrategyArmoryDispatch.assembleLotteryStrategy(strategyId)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#27AE60;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="950" y="2315" width="480" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-ar-ctrl-svc" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="AR-ctrl" target="AR-svc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="AR-q1" value="Query strategy_award  (award probability list)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="950" y="2380" width="480" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-ar-svc-q1" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="AR-svc" target="AR-q1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="AR-q2" value="Query strategy_rule + rule_tree / node / line"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="950" y="2428" width="480" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-ar-q1-q2" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="AR-q1" target="AR-q2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="AR-calc" value="Compute probability-range intervals"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#27AE60;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="950" y="2476" width="480" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-ar-q2-calc" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="AR-q2" target="AR-calc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="AR-alg" value="Precision &lt;= 10000?"
+                style="rhombus;whiteSpace=wrap;html=1;fillColor=#F39C12;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="1000" y="2533" width="380" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-ar-calc-alg" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="AR-calc" target="AR-alg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="AR-o1" value="O1 Algorithm&#xa;HashMap direct lookup&#xa;Query O(1)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ABC9C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="900" y="2630" width="180" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="AR-ologn" value="OLogN Algorithm&#xa;Sorted array + binary search&#xa;Query O(logN)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ABC9C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="1300" y="2630" width="180" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-ar-alg-o1" value="YES" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="AR-alg" target="AR-o1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-ar-alg-ologn" value="NO" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="AR-alg" target="AR-ologn">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="AR-redis" value="Write to Redis cache&#xa;strategy:{id} / strategy_award:{id} / strategy_rate_table / rule_tree:{treeId}"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="950" y="2725" width="480" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-ar-o1-redis" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="AR-o1" target="AR-redis">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-ar-ologn-redis" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="AR-ologn" target="AR-redis">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="AR-done" value="Strategy Armory Complete  →  Ready to raffle  [OK]"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2C3E50;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="950" y="2805" width="480" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-ar-redis-done" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="AR-redis" target="AR-done">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+
+        <!-- ================================================ -->
+        <!-- PANEL 4: Stock + DB Sharding                     -->
+        <!-- ================================================ -->
+
+        <mxCell id="p4-title" value="Panel 4 — Stock Eventual Consistency  &amp;  DB Sharding Architecture"
+                style="text;html=1;strokeColor=none;fillColor=none;align=center;
+                       verticalAlign=middle;whiteSpace=wrap;rounded=0;
+                       fontSize=16;fontStyle=1;fontColor=#2C3E50;"
+                vertex="1" parent="1">
+          <mxGeometry x="50" y="2990" width="1700" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- Stock flow -->
+        <mxCell id="g-stock" value="Stock Eventual Consistency Chain"
+                style="swimlane;whiteSpace=wrap;html=1;fillColor=#E67E2215;
+                       strokeColor=#E67E22;strokeWidth=2;fontColor=#E67E22;
+                       fontSize=11;fontStyle=3;startSize=25;"
+                vertex="1" parent="1">
+          <mxGeometry x="50" y="3040" width="780" height="700" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="ST-hit" value="RuleStockLogicTreeNode  (stock check)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ABC9C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="3075" width="420" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="ST-redis" value="Redis AtomicLong DECR&#xa;strategy_award_stock:{strategyId}:{awardId}"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="3140" width="420" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-st-hit-redis" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="ST-hit" target="ST-redis">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="ST-check" value="stock &gt; 0?"
+                style="rhombus;whiteSpace=wrap;html=1;fillColor=#F39C12;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="250" y="3208" width="320" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-st-redis-check" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="ST-redis" target="ST-check">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="ST-exhaust" value="Stock exhausted&#xa;→ Return fallback award"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E74C3C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="60" y="3223" width="170" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-st-check-exhaust" value="NO" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="ST-check" target="ST-exhaust">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="ST-queue" value="Push decrement to Redis delay-queue&#xa;strategy_award_count_queue:{id}"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="3305" width="420" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-st-check-queue" value="YES" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="ST-check" target="ST-queue">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="ST-job" value="UpdateAwardStockJob  (XXL-Job, every minute)&#xa;Drain delay-queue → batch update MySQL"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E74C3C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="3380" width="420" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-st-queue-job" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="ST-queue" target="ST-job">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="ST-mysql-chk" value="MySQL update OK?"
+                style="rhombus;whiteSpace=wrap;html=1;fillColor=#F39C12;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="250" y="3460" width="320" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-st-job-chk" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="ST-job" target="ST-mysql-chk">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="ST-dlq" value="MQ dead-letter queue&#xa;fallback retry"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E74C3C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="60" y="3475" width="170" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-st-chk-dlq" value="FAIL" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="ST-mysql-chk" target="ST-dlq">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="ST-ok" value="MySQL strategy_award.stock synced  [OK]"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#27AE60;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="3558" width="420" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-st-chk-ok" value="OK" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="ST-mysql-chk" target="ST-ok">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="ST-zero" value="When Redis stock = 0&#xa;→ Emit ActivitySkuStockZeroMessageEvent&#xa;→ ActivitySkuStockZeroCustomer consumes&#xa;→ Set raffle_activity_sku.stock_count_surplus = 0  (delist)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9B59B6;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="3628" width="420" height="75" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-st-ok-zero" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="ST-ok" target="ST-zero">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="ST-comp" value="SendMessageTaskJob  (compensation, every minute)&#xa;Scan task table status=create&#xa;Re-publish pending MQ messages  (at-least-once guarantee)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E74C3C;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="200" y="3728" width="420" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- DB Sharding -->
+        <mxCell id="g-db" value="Database Sharding Architecture  (mini-db-router)"
+                style="swimlane;whiteSpace=wrap;html=1;fillColor=#E67E2215;
+                       strokeColor=#E67E22;strokeWidth=2;fontColor=#E67E22;
+                       fontSize=11;fontStyle=3;startSize=25;"
+                vertex="1" parent="1">
+          <mxGeometry x="880" y="3040" width="850" height="700" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="DB-router" value="DB Router  (route key: userId)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="1060" y="3075" width="500" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="DB-algo" value="hashCode  = userId.hashCode()&#xa;DB index  = hashCode % 2&#xa;Table idx = hashCode % 4"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#8E44AD;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="1060" y="3140" width="500" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-db-router-algo" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="DB-router" target="DB-algo">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="DB-01" value="big_market_01&#xa;(userId hashCode % 2 == 0)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="920" y="3233" width="280" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="DB-02" value="big_market_02&#xa;(userId hashCode % 2 == 1)"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E67E22;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=11;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="1420" y="3233" width="280" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-db-algo-01" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="DB-algo" target="DB-01">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a-db-algo-02" style="endArrow=block;endFill=1;"
+                edge="1" parent="1" source="DB-algo" target="DB-02">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="DB-shard-title" value="Sharded Tables  (4 tables per logical table)"
+                style="text;html=1;strokeColor=none;fillColor=none;align=center;
+                       verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontStyle=1;fontColor=#E67E22;"
+                vertex="1" parent="1">
+          <mxGeometry x="920" y="3300" width="680" height="25" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="DB-st1" value="raffle_activity_account_{000~003}"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#5D6D7E;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="920" y="3335" width="680" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="DB-st2" value="raffle_activity_account_day_{000~003}"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#5D6D7E;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="920" y="3377" width="680" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="DB-st3" value="raffle_activity_account_month_{000~003}"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#5D6D7E;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="920" y="3419" width="680" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="DB-st4" value="user_raffle_order_{000~003}"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#5D6D7E;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="920" y="3461" width="680" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="DB-st5" value="user_award_record_{000~003}"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#5D6D7E;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="920" y="3503" width="680" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="DB-st6" value="user_credit_account_{000~003}  /  user_credit_order_{000~003}"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#5D6D7E;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="920" y="3545" width="680" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="DB-st7" value="task_{000~003}  /  user_behavior_rebate_order_{000~003}"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#5D6D7E;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="920" y="3587" width="680" height="32" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="DB-shared-title" value="Shared DB  (big_market — no sharding)"
+                style="text;html=1;strokeColor=none;fillColor=none;align=center;
+                       verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontStyle=1;fontColor=#2C3E50;"
+                vertex="1" parent="1">
+          <mxGeometry x="920" y="3630" width="680" height="25" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="DB-cm1" value="strategy  /  strategy_award  /  strategy_rule"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2C3E50;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="920" y="3665" width="680" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="DB-cm2" value="rule_tree  /  rule_tree_node  /  rule_tree_node_line"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2C3E50;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="920" y="3707" width="680" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="DB-cm3" value="award  /  raffle_activity  /  raffle_activity_sku  /  raffle_activity_count  /  daily_behavior_rebate"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2C3E50;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;"
+                vertex="1" parent="1">
+          <mxGeometry x="920" y="3749" width="680" height="32" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="DB-es" value="Elasticsearch  (CQRS read-side)&#xa;user_raffle_order  — real-time sync from MySQL"
+                style="rounded=1;whiteSpace=wrap;html=1;fillColor=#16A085;
+                       strokeColor=#FFFFFF;fontColor=#FFFFFF;fontSize=10;fontStyle=1;"
+                vertex="1" parent="1">
+          <mxGeometry x="920" y="3800" width="680" height="55" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
